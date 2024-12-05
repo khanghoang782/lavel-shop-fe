@@ -1,7 +1,12 @@
+import {LoginForm} from "../components/forms/LoginForm.jsx";
+
+
 export function LoginPage() {
+
+
     return (
-        <>
-            <h1>Login Page</h1>
-        </>
+        <main className="w-screen min-h-screen flex flex-col items-center justify-center pb-48 bg-gray-50">
+            <LoginForm/>
+        </main>
     )
 }
