@@ -1,24 +1,34 @@
 import { useForm } from "react-hook-form";
-import { useNavigate } from "react-router-dom";
+import {useLocation, useNavigate} from "react-router-dom";
 import AxiosClient from "../../services/api/AxiosClient.js";
+import {useAuth} from "../../utils/AuthContext.jsx";
 
 export function LoginForm() {
-    let navigate = useNavigate();
+    const {setAuth}=useAuth()
+    const location = useLocation();
+    const navigate = useNavigate();
+    const from = location.state?.from?.pathname||"/";
+
 
 
     const {register,handleSubmit} = useForm();
 
     const onSubmit = async (data) => {
         try{
-            localStorage.removeItem("ACCESS_TOKEN");
-            await AxiosClient.post('/login',data).then(response => {
-                localStorage.setItem("ACCESS_TOKEN", response.data.token);
-                navigate("/");
-            }).catch(error => {
-                console.log(error);
-            });
+            const response = await AxiosClient.post("/login",data);
+
+            const token=response?.data?.token;
+            localStorage.setItem("ACCESS_TOKEN",token);
+
+            const name=response?.data?.name;
+            const role=response?.data?.role;
+
+            setAuth({name:name,role:role});
+            //console.log(name,role);
+
+            navigate(from,{replace:true});
         }catch(error){
-            navigate("/login");
+
             console.log(error);
         }
     }
