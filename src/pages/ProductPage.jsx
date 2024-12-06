@@ -1,4 +1,4 @@
-import {Link, useParams} from "react-router-dom";
+import {useParams} from "react-router-dom";
 import {useEffect, useState} from "react";
 import axiosClient from "../services/api/AxiosClient.js";
 import {NavBar} from "../components/NavBar.jsx";

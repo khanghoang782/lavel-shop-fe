@@ -1,5 +1,5 @@
 import { useForm } from "react-hook-form";
-import {useLocation, useNavigate} from "react-router-dom";
+import {useLocation, useNavigate,Link} from "react-router-dom";
 import AxiosClient from "../../services/api/AxiosClient.js";
 import {useAuth} from "../../utils/AuthContext.jsx";
 
@@ -38,7 +38,7 @@ export function LoginForm() {
             <div className="">
                 <h2 className="mt-10 text-center text-2xl/9 font-bold text-gray-900">Log in</h2>
             </div>
-            <div className="max-w-xl py-6 px-8 h-80 mt-20 bg-white rounded shadow-xl w-[20%]">
+            <div className="max-w-xl py-6 px-8 h-fit mt-20 bg-white rounded shadow-xl w-[20%]">
                 <form onSubmit={handleSubmit(onSubmit)}>
                     <div className="mb-6">
                         <label htmlFor="name" className="block text-gray-800 font-bold">Email:</label>
@@ -54,6 +54,10 @@ export function LoginForm() {
                         className="cursor-pointer py-2 px-4 block mt-6 bg-indigo-500 text-white font-bold w-full text-center rounded">Login
                     </button>
                 </form>
+                <p className="mt-10 text-center text-sm/6 text-gray-500">
+                    Not a member ?
+                    <Link to="/register" className="font-semibold text-indigo-600 hover:text-indigo-500"> Click here to register</Link>
+                </p>
             </div>
         </>
     )

@@ -51,6 +51,16 @@ export function ProductTable() {
             setProductList(products);
         }
     }
+    const deleteItem = async (id)=>{
+        try {
+            const response = await AxiosClient.delete(`/product/${id}`);
+            getProductList();
+        }catch(err){
+            console.log(err);
+        }
+
+
+    }
 
 
     return (
@@ -69,6 +79,7 @@ export function ProductTable() {
                     <th className="px-4 py-3 text-left text-sm font-semibold uppercase">Catalog</th>
                     <th className="px-4 py-3 text-left text-sm font-semibold uppercase">Price</th>
                     <th className="px-4 py-3 text-left text-sm font-semibold uppercase">Stock</th>
+                    <th className="px-4 py-3 text-left text-sm font-semibold uppercase">Action</th>
                 </tr>
                 </thead>
                 <tbody className="text-gray-700">
@@ -77,10 +88,16 @@ export function ProductTable() {
                         return (
                             <tr key={product.id}>
                                 <td className="px-4 py-3 text-left">{product.id}</td>
-                                <td className="px-4 py-3 text-left"><Link to={"/product/"+product.id}>{product.product_name}</Link></td>
+                                <td className="px-4 py-3 text-left"><Link
+                                    to={"/product/" + product.id}>{product.product_name}</Link></td>
                                 <td className="px-4 py-3 text-left">{product.catalog_name}</td>
                                 <td className="px-4 py-3 text-left">{product.price}</td>
                                 <td className="px-4 py-3 text-left">{product.stock}</td>
+                                <td className="px-4 py-3 text-left">
+                                    <button className="text-white bg-red-700 hover:bg-red-800 focus:ring-4 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2"
+                                            onClick={()=>deleteItem(product.id)}
+                                        >Delete</button>
+                                </td>
                             </tr>
                         )
                     })
