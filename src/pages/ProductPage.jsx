@@ -2,7 +2,7 @@ import {useParams} from "react-router-dom";
 import {useEffect, useState} from "react";
 import axiosClient from "../services/api/AxiosClient.js";
 import {NavBar} from "../components/NavBar.jsx";
-
+import defaultProductImg from "/defaultProductImg.png"
 
 export function ProductPage() {
     const productId = useParams().id;
@@ -23,7 +23,7 @@ export function ProductPage() {
             <div className="flex flex-col items-center w-screen gap-28 mt-8">
                 <div className="flex gap-8">
                     <div>
-                        <img src="../../public/holder/defaultHolder.png" alt="product"
+                        <img src={product.image?product.image:defaultProductImg} alt="product"
                              className="w-[400px] h-[340px] border-8"/>
                     </div>
                     <div>
