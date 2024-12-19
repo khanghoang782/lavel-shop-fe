@@ -1,64 +1,61 @@
 import {useParams} from "react-router-dom";
 import {useEffect, useState} from "react";
-import axiosClient from "../services/api/AxiosClient.js";
 import {NavBar} from "../components/NavBar.jsx";
-import defaultProductImg from "/defaultProductImg.png"
+import ProductExampleImg from "/placeholders/product_example.jpg";
+import {getOneProductById} from "../services/ProductService.js";
+
 
 export function ProductPage() {
     const productId = useParams().id;
     const [product, setProduct] = useState({});
+    const [quantity, setQuantity] = useState(0);
     useEffect(() => {
         getProduct();
     },[])
     const getProduct = async () => {
 
-            const response = await axiosClient.get(`/products/${productId}`);
-            //console.log(response);
-            setProduct(response.data?.data);
+        const result = await getOneProductById(productId);
+        setProduct(result);
     }
-
     return (
-        <main>
+        <>
             <NavBar/>
-            <div className="flex flex-col items-center w-screen gap-28 mt-8">
-                <div className="flex gap-8">
-                    <div>
-                        <img src={product.image?product.image:defaultProductImg} alt="product"
-                             className="w-[400px] h-[340px] border-8"/>
+            <main className="flex flex-col items-center">
+                <div className="flex justify-center gap-10 pr-32 my-10 bg-white w-fit p-4 rounded">
+                    <div className="w-[420px] h-[540px] bg-white rounded-lg overflow-hidden border-4 border-gray-200">
+                        <img src={product.immage?product.immage:ProductExampleImg} className="w-full h-auto block"/>
                     </div>
-                    <div>
-                        <h2 className="text-3xl font-medium uppercase mb-2">{product.product_name}</h2>
-                        <div className="space-y-2">
-                            <p className="text-gray-800 font-semibold space-x-2">
-                                <span>Availability: </span>
-                                <span className="text-green-600">{product.stock}</span>
-                            </p>
-                            <p className="space-x-2">
-                                <span className="text-gray-800 font-semibold">Doanh mục: </span>
-                                <span className="text-gray-600">{product.catalog_name}</span>
-                            </p>
-                        </div>
-                        <div className="flex items-baseline mb-1 space-x-2 font-roboto mt-4">
-                            <p className="text-xl text-primary font-semibold">Price: {product.price} đ</p>
-                            {/*<p className="text-base text-gray-400 line-through">$55.00</p>*/}
-                        </div>
-
-
-                        <div className="mt-6 flex gap-3 border-b border-gray-200 pb-5 pt-5">
+                    <div className="flex flex-col justify-between">
+                        <h1 className="text-5xl font-semibold">{product.product_name}</h1>
+                        <h2 className="text-4xl mt-20">{product.price} đ</h2>
+                        <div className="flex gap-28 mb-5">
+                            <div className="relative flex items-center max-w-[8rem]">
+                                <button
+                                    onClick={()=>setQuantity(quantity - 1)}
+                                    className="bg-gray-100 hover:bg-gray-200 border border-gray-300 rounded-s-lg p-3 h-11 text-2xl font-bold"
+                                >-
+                                </button>
+                                <p className="bg-gray-50 border-x-0 border-gray-300 h-11 text-center text-gray-900 block w-full py-2.5 text-3xl px-4">{quantity}</p>
+                                <button
+                                    onClick={()=>setQuantity(quantity + 1)}
+                                    className="bg-gray-100 hover:bg-gray-200 border border-gray-300 rounded-e-lg p-3 h-11 text-2xl font-bold"
+                                >+
+                                </button>
+                            </div>
                             <button
-                                className="text-white bg-blue-700 hover:bg-blue-800 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2">
-                                Add to cart
+                                className="text-white bg-blue-700 hover:bg-blue-800 font-medium rounded-full text-xl px-5 py-2.5 text-center me-2 mb-2">Thêm
+                                vào giỏ hàng
                             </button>
                         </div>
                     </div>
-
-
                 </div>
-                <div className="w-[790px]">
-                    <h2 className="text-4xl font-bold">Mô tả sản phẩm: </h2>
-                    <p className="mt-2 text-gray-800">{product.description}</p>
+
+                <div className="flex justify-center">
+                    <p className="w-[1060px] text-xl bg-white p-6 rounded-lg">
+                        {product.description}
+                    </p>
                 </div>
-            </div>
-        </main>
+            </main>
+        </>
     )
 }

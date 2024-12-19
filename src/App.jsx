@@ -8,6 +8,7 @@ import {OrderManager} from "./pages/admin/OrderManager.jsx";
 import AdminLayout from "./pages/admin/AdminLayout.jsx";
 import {ProductPage} from "./pages/ProductPage.jsx";
 import {RegisterForm} from "./components/forms/RegisterForm.jsx";
+import {CatalogPage} from "./pages/CatalogPage.jsx";
 
 
 
@@ -19,6 +20,9 @@ function App() {
         <Route path="/login" element={<LoginPage/>}/>
         <Route path="/register" element={<RegisterForm/>}/>
         <Route path="/product/:id" element={<ProductPage/>}/>
+        <Route path="/catalog/:catalogname" element={<CatalogPage/>}/>
+
+
 
         <Route path="/admin" element={<AdminLayout/>}>
             <Route index element={<ProductManager/>}/>

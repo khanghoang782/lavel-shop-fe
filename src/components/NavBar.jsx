@@ -1,17 +1,25 @@
 import {Link} from "react-router-dom";
+import LoginIcon from '/icons/user_icon.png'
+import CartIcon from '/icons/cart_icon.png'
 
 export function NavBar(){
+    const menuList=[
+        {title: "Trang chủ", link: "/",id:0},
+        {title: "Áo", link: "/catalog/1",id:1},
+        {title: "Quần", link: "/catalog/2",id:2},
+        {title: "Phụ Kiện", link: "/catalog/4",id:4}
+    ];
     return (
-        <nav className="bg-blue-400 w-screen flex justify-around text-white items-center py-4">
-            <div><h2 className="font-bold text-3xl">Lavel shop</h2></div>
-            <div className="flex w-[20%] justify-evenly text-xl font-bold">
-                <Link to={"/"}>Home</Link>
-                <Link to={"/"}>Áo</Link>
-                <Link to={"/"}>Quần</Link>
-                <Link to={"/"}>Phụ kiện</Link>
+        <nav className="flex bg-white justify-between items-center px-20 h-fit">
+            <div><h2 className="font-bold text-2xl">Lavel shop</h2></div>
+            <div className="text-2xl w-[600px] h-fit flex justify-center items-center">
+                {menuList.map((item) => (
+                    <Link state={{id:item.id}} to={item.link} key={item.title} className="hover:bg-gray-100 py-2 px-3">{item.title}</Link>
+                ))}
             </div>
-            <div>
-                <Link to={"/login"} className="font-bold text-2xl">Login</Link>
+            <div className="flex w-fit gap-5">
+                <Link to={"/login"} className="flex items-center gap-2"><p className="font-semibold">Đăng nhập</p><img src={LoginIcon} alt="logo" className="h-[36px]"/></Link>
+                <img src={CartIcon} alt="logo" className="h-[36px]"/>
             </div>
         </nav>
     )

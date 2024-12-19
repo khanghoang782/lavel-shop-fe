@@ -1,26 +1,20 @@
-
 import {NavBar} from "../components/NavBar.jsx";
-import banner from "/banner.png"
-import {useAuth} from "../utils/AuthContext.jsx";
-import defaultProductImg from "/defaultProductImg.png";
-import {Link} from "react-router-dom";
-import {ItemDisplayB} from "../components/ui/ItemDisplayB.jsx";
-import {FeetureDisplay} from "../components/FeetureDisplay.jsx";
+import Banner from "/banners/banner1.png"
+import {ProductDisplay} from "../components/ProductDisplay.jsx";
+
 
 export function HomePage() {
-    const {auth}=useAuth();
+
 
     return (
         <>
             <NavBar/>
-            <div className="flex flex-col items-center">
-
-
-                <div className="flex justify-center">
-                    <img src={banner} alt="banner" className="w-[70%]"/>
+            <main className="flex flex-col items-center">
+                <div className="w-screen flex justify-center">
+                    <img src={Banner} className="w-[1440px] h-[580]"/>
                 </div>
-                <FeetureDisplay/>
-            </div>
+                <ProductDisplay/>
+            </main>
         </>
     )
 }
