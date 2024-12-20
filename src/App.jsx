@@ -9,6 +9,7 @@ import AdminLayout from "./pages/admin/AdminLayout.jsx";
 import {ProductPage} from "./pages/ProductPage.jsx";
 import {RegisterForm} from "./components/forms/RegisterForm.jsx";
 import {CatalogPage} from "./pages/CatalogPage.jsx";
+import CheckoutPage from "./pages/CheckoutPage.jsx";
 
 
 
@@ -21,6 +22,8 @@ function App() {
         <Route path="/register" element={<RegisterForm/>}/>
         <Route path="/product/:id" element={<ProductPage/>}/>
         <Route path="/catalog/:catalogname" element={<CatalogPage/>}/>
+
+        <Route path={"/checkout"} element={<CheckoutPage/>}/>
 
 
 

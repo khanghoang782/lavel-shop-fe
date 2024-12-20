@@ -4,19 +4,19 @@ import {ProductCard} from "../components/ui/ProductCard.jsx";
 import {useEffect, useState} from "react";
 
 import {getProductByCatalogId} from "../services/ProductService.js";
+import {useParams} from "react-router-dom";
 
 export function CatalogPage() {
+    const catalogId=useParams().catalogname;
     const [productList, setProductList] = useState([]);
     const [showSort, setShowSort] = useState(false);
     useEffect(() => {
-        initProductDisplay(1);
-    },[])
+        initProductDisplay(catalogId);
+    },[catalogId])
     const initProductDisplay=async (id)=>{
-
         const result=await getProductByCatalogId(id);
         const productList=result?.data?.[0]?.data ?? []
         setProductList(productList);
-
     }
 
     return (

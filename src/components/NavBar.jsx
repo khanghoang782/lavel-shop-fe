@@ -1,8 +1,10 @@
 import {Link} from "react-router-dom";
 import LoginIcon from '/icons/user_icon.png'
 import CartIcon from '/icons/cart_icon.png'
+import {useAuth} from "../utils/AuthContext.jsx";
 
 export function NavBar(){
+    const {auth}=useAuth();
     const menuList=[
         {title: "Trang chủ", link: "/",id:0},
         {title: "Áo", link: "/catalog/1",id:1},
@@ -18,8 +20,8 @@ export function NavBar(){
                 ))}
             </div>
             <div className="flex w-fit gap-5">
-                <Link to={"/login"} className="flex items-center gap-2"><p className="font-semibold">Đăng nhập</p><img src={LoginIcon} alt="logo" className="h-[36px]"/></Link>
-                <img src={CartIcon} alt="logo" className="h-[36px]"/>
+                <Link to={"/login"} className="flex items-center gap-2"><p className="font-semibold">{auth ? auth.name : "Đăng nhập"}</p><img src={LoginIcon} alt="logo" className="h-[36px]"/></Link>
+                <Link to={"/checkout"}><img src={CartIcon} alt="logo" className="h-[36px]"/></Link>
             </div>
         </nav>
     )

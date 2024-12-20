@@ -3,6 +3,7 @@ import {useEffect, useState} from "react";
 import {NavBar} from "../components/NavBar.jsx";
 import ProductExampleImg from "/placeholders/product_example.jpg";
 import {getOneProductById} from "../services/ProductService.js";
+import {saveItem} from "../services/CartService.js";
 
 
 export function ProductPage() {
@@ -43,6 +44,7 @@ export function ProductPage() {
                                 </button>
                             </div>
                             <button
+                                onClick={()=>saveItem(product,quantity)}
                                 className="text-white bg-blue-700 hover:bg-blue-800 font-medium rounded-full text-xl px-5 py-2.5 text-center me-2 mb-2">Thêm
                                 vào giỏ hàng
                             </button>
