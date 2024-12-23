@@ -16,7 +16,6 @@ export function ProductDisplay() {
         setMenuChoice(pos);
 
     }
-
     return (
         <div className="w-[1144px] bg-white px-5">
             <ul className="flex w-full justify-center gap-8 text-2xl font-semibold my-4">

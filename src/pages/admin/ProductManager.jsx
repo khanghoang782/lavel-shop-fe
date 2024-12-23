@@ -15,7 +15,7 @@ export function ProductManager() {
                 <div className="h-[100px]"></div>
 
                 <ProductTable handleAdd={toggleCreateProduct}/>
-                <CreateProductForm/>
+               {/* <CreateProductForm/>*/}
 
             </div>
     )

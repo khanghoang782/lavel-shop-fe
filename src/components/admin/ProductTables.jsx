@@ -68,8 +68,9 @@ export function ProductTable() {
             <div className="my-2 pl-2">
                 <button onClick={()=>getProductList()}
                     className="text-white bg-blue-700 hover:bg-blue-800 rounded-lg text-sm px-5 py-2.5">Refresh</button>
-                <button
-                        className="text-white bg-green-700 hover:bg-green-800 focus:ring-4 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2">Add</button>
+                <Link
+                        to={"/admin/addproduct"}
+                        className="text-white bg-green-700 hover:bg-green-800 focus:ring-4 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2">Add</Link>
             </div>
             <table className="bg-white w-[1200px]">
                 <thead className="bg-gray-800 text-white">

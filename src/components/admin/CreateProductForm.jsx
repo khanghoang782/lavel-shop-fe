@@ -1,8 +1,7 @@
 import { useForm } from "react-hook-form";
 import {useEffect, useState} from "react";
 import AxiosClient from "../../services/api/AxiosClient.js";
-
-
+import {getCatalogList} from "../../services/ProductService.js";
 
 
 export function CreateProductForm() {
@@ -15,11 +14,14 @@ export function CreateProductForm() {
     },[])
     const getCatalogs=async()=>{
         try{
-            const response = await AxiosClient.get("/catalogs");
+           /* const response = await AxiosClient.get("/catalogs");
             const data=response?.data?.[0] ?? [];
 
-            //console.log(data);
-            setCatalogs(data);
+            console.log(data);
+            setCatalogs(data);*/
+            const respone = await getCatalogList()
+            //console.log(respone);
+            setCatalogs(respone.data);
 
         }catch(err){
             console.log(err);
@@ -40,7 +42,7 @@ export function CreateProductForm() {
     }
 
     return (
-        <div className="w-[1200px] mb-9">
+        <div className="w-[1200px] mb-9 mx-auto mt-20">
             <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col">
                 <div className="flex gap-6">
                     <div>
@@ -57,9 +59,8 @@ export function CreateProductForm() {
                         <div className="flex flex-col min-w-80 mb-4">
                             <label className="block mb-2 text-sm font-medium text-gray-900">Catalog: </label>
                             <select {...register("catalog_id", {required: true})}>
-                                <option key="..." selected value="...">...</option>
+                                {/*<option key="..." defaultValue value="...">...</option>*/}
                                 {
-
                                     catalogs?.map((item) => {
                                         return <option key={item.id} value={item.id}>{item.catalog_name}</option>
                                     })
@@ -80,7 +81,7 @@ export function CreateProductForm() {
                 </div>
                 <button type="submit"
                         className="text-white bg-green-700 hover:bg-green-800 focus:ring-4 font-medium rounded-lg text-sm px-5 py-2.5 my-2.5 w-32"
-                    >Add Product</button>
+                    >SAVE</button>
             </form>
         </div>
     )
