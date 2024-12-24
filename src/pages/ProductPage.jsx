@@ -18,9 +18,7 @@ export function ProductPage() {
         const result = await getOneProductById(productId);
         setProduct(result);
     }
-    function formatNumber(num) {
-        return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-    }
+
     return (
         <>
             <NavBar/>
@@ -31,7 +29,7 @@ export function ProductPage() {
                     </div>
                     <div className="flex flex-col justify-between">
                         <h1 className="text-5xl font-semibold">{product.product_name}</h1>
-                        <h2 className="text-4xl mt-20">{formatNumber(product.price)} đ</h2>
+                        <h2 className="text-4xl mt-20">{product.price} đ</h2>
                         <div className="flex gap-28 mb-5">
                             <div className="relative flex items-center max-w-[8rem]">
                                 <button
