@@ -2,41 +2,49 @@ import { useForm } from "react-hook-form";
 import {useEffect, useState} from "react";
 import AxiosClient from "../../services/api/AxiosClient.js";
 import {getCatalogList} from "../../services/ProductService.js";
+import axios from "axios";
 
 
 export function CreateProductForm() {
     const {register, handleSubmit, reset,setValue, control} = useForm();
     const [catalogs,setCatalogs] = useState([]);
 
-
     useEffect(()=>{
         getCatalogs();
     },[])
     const getCatalogs=async()=>{
         try{
-           /* const response = await AxiosClient.get("/catalogs");
-            const data=response?.data?.[0] ?? [];
-
-            console.log(data);
-            setCatalogs(data);*/
-            const respone = await getCatalogList()
-            //console.log(respone);
-            setCatalogs(respone.data);
-
+            const result = await getCatalogList()
+            setCatalogs(result);
         }catch(err){
             console.log(err);
         }
     }
 
     async function onSubmit(data) {
-        try{
-            const response = await AxiosClient.post("/product", data);
+            //const response = await AxiosClient.post("/product",data);
+            //console.log(response);
+        let token=localStorage.getItem("ACCESS_TOKEN");
+        const formData = new FormData();
+        formData.append('image',data.image[0]);
+        delete data.image;
 
-            if(response.status === 200){
+        const response = await AxiosClient.post("/product",data);
+        //console.log(response);
+
+        if(response.status === 200){
+            formData.append('product_id',response.data.data.id);
+            axios.post('http://127.0.0.1:8000/api/upload',formData,{
+                headers: {
+                    'content-type':'multipart/form-data',
+                    'Authorization':`Bearer ${token}`
+                }
+            }).then(()=>{
+                //console.log(res);
                 reset();
-            }
-        }catch(err){
-            console.log(err)
+            }).catch(err=>{
+                console.log(err);
+            });
         }
 
     }
@@ -61,9 +69,9 @@ export function CreateProductForm() {
                             <select {...register("catalog_id", {required: true})}>
                                 {/*<option key="..." defaultValue value="...">...</option>*/}
                                 {
-                                    catalogs?.map((item) => {
-                                        return <option key={item.id} value={item.id}>{item.catalog_name}</option>
-                                    })
+                                    catalogs.map((item) => (
+                                        <option key={item.id} value={item.id}>{item.catalog_name}</option>
+                                    ))
                                 }
                             </select>
                         </div>
@@ -77,11 +85,17 @@ export function CreateProductForm() {
 
                 <div className="flex flex-col max-w-[50%]">
                     <label className="block mb-2 text-sm font-medium text-gray-900">Description</label>
-                    <textarea {...register("description")} rows={4} className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 min-w-[800px]"/>
+                    <textarea {...register("description")} rows={4}
+                              className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 min-w-[800px]"/>
+                </div>
+                <div className="flex flex-col max-w-[50%]">
+                    <label className="block mb-2 text-sm font-medium text-gray-900">Description</label>
+                    <input type="file" {...register("image")}/>
                 </div>
                 <button type="submit"
                         className="text-white bg-green-700 hover:bg-green-800 focus:ring-4 font-medium rounded-lg text-sm px-5 py-2.5 my-2.5 w-32"
-                    >SAVE</button>
+                >SAVE
+                </button>
             </form>
         </div>
     )

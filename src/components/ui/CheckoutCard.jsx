@@ -1,14 +1,14 @@
 import ProductExampleImg from "/placeholders/product_example.jpg";
 import {deleteItem} from "../../services/CartService.js";
 
-export function CheckoutCard({id, name, price, quantity}) {
+export function CheckoutCard({id, name, price, quantity,imageUrl}) {
     function formatNumber(num) {
         return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
     }
     return (
         <div className="flex">
             <div className="w-[160px] h-[270px] rounded-lg overflow-hidden">
-                <img src={ProductExampleImg} className="w-full h-auto block"/>
+                <img src={imageUrl?imageUrl:ProductExampleImg} className="w-full h-auto block"/>
             </div>
             <div className="flex flex-col flex-1 ml-2">
                 <div>

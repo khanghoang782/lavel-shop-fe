@@ -8,7 +8,7 @@ export function CatalogSideBar() {
     },[])
     const fetchCatalogs = async () => {
         const result=await getCatalogList();
-        setCatalogs(result.data);
+        setCatalogs(result);
     }
 
     return (

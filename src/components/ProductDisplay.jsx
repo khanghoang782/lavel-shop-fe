@@ -31,7 +31,7 @@ export function ProductDisplay() {
             </ul>
             <div className="grid grid-cols-4">
                 {productList.map((item)=>(
-                    <ProductCard key={item.id} name={item.product_name} price={item.price} img={item.img} id={item.id}/>
+                    <ProductCard key={item.id} name={item.product_name} price={item.price} img={item.image_url} id={item.id}/>
                 ))}
             </div>
         </div>

@@ -10,15 +10,25 @@ export function CatalogPage() {
     const catalogId=useParams().catalogname;
     const [productList, setProductList] = useState([]);
     const [showSort, setShowSort] = useState(false);
+    const [page, setPage] = useState({current:0,last:0});
     useEffect(() => {
         initProductDisplay(catalogId);
     },[catalogId])
     const initProductDisplay=async (id)=>{
         const result=await getProductByCatalogId(id);
         const productList=result?.data?.[0]?.data ?? []
+        //console.log(result.data?.[0].last_page);//[0].last_page
+        setPage({current: 1,last:result.data?.[0].last_page});
+
         setProductList(productList);
     }
+    const getMoreProducts=async () => {
 
+        const result=await getProductByCatalogId(catalogId,page.current+1);
+        const list=result?.data?.[0]?.data ?? [];
+        setProductList([...productList,...list]);
+        setPage((prevPage)=> ({...prevPage,current:page.current+1}));
+    }
     return (
         <>
             <NavBar/>
@@ -30,7 +40,7 @@ export function CatalogPage() {
                         <div className="relative">
                             <button
                                 onClick={() => setShowSort(!showSort)}
-                                className="w-[150px] py-2.5 px-5 text-sm text-left font-medium text-gray-900 bg-gray-100 rounded-full border border-gray-200">
+                                className="w-[160px] py-2.5 px-5 text-sm text-left font-medium text-gray-900 bg-gray-100 rounded-full border border-gray-200">
                                 Mặc định
                             </button>
                             <div
@@ -46,8 +56,12 @@ export function CatalogPage() {
                     <div className="w-[1144px] bg-white px-5">
                         <div className="grid grid-cols-4">
                             {productList.map((item) => (
-                                <ProductCard key={item.id} name={item.product_name} price={item.price} id={item.id}/>
+                                <ProductCard key={item.id} name={item.product_name} price={item.price} id={item.id} img={item.image_url}/>
                             ))}
+                        </div>
+                        <div className="w-full flex-row flex justify-center mt-10 mb-14">
+                            <button onClick={()=>getMoreProducts()}
+                                className={page.current>=page.last?"py-2.5 px-5 rounded-full border border-gray-200  hidden":"py-2.5 px-5 rounded-full border border-gray-200"}>Thêm sản phẩm</button>
                         </div>
                     </div>
                 </section>

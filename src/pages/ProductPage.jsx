@@ -2,7 +2,7 @@ import {useParams} from "react-router-dom";
 import {useEffect, useState} from "react";
 import {NavBar} from "../components/NavBar.jsx";
 import ProductExampleImg from "/placeholders/product_example.jpg";
-import {getOneProductById} from "../services/ProductService.js";
+import {getImageUrl, getOneProductById} from "../services/ProductService.js";
 import {saveItem} from "../services/CartService.js";
 
 
@@ -10,22 +10,32 @@ export function ProductPage() {
     const productId = useParams().id;
     const [product, setProduct] = useState({});
     const [quantity, setQuantity] = useState(0);
+    const [image, setImage] = useState("");
     useEffect(() => {
         getProduct();
     },[])
     const getProduct = async () => {
 
         const result = await getOneProductById(productId);
+        try{
+            const imageUrl=await getImageUrl(productId);
+            setImage(imageUrl);
+        }catch(err){
+
+        }
         setProduct(result);
     }
-
+    function saveProduct(product,quantity,image){
+        saveItem(product,quantity,image)
+        setQuantity(0);
+    }
     return (
         <>
             <NavBar/>
             <main className="flex flex-col items-center">
                 <div className="flex justify-center gap-10 pr-32 my-10 bg-white w-fit p-4 rounded">
                     <div className="w-[420px] h-[540px] bg-white rounded-lg overflow-hidden border-4 border-gray-200">
-                        <img src={product.immage?product.immage:ProductExampleImg} className="w-full h-auto block"/>
+                        <img src={image?image:ProductExampleImg} className="w-full h-auto block"/>
                     </div>
                     <div className="flex flex-col justify-between">
                         <h1 className="text-5xl font-semibold">{product.product_name}</h1>
@@ -45,7 +55,7 @@ export function ProductPage() {
                                 </button>
                             </div>
                             <button
-                                onClick={()=>saveItem(product,quantity)}
+                                onClick={()=>saveProduct(product,quantity,image)}
                                 className="text-white bg-blue-700 hover:bg-blue-800 font-medium rounded-full text-xl px-5 py-2.5 text-center me-2 mb-2">Thêm
                                 vào giỏ hàng
                             </button>

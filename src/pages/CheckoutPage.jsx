@@ -1,10 +1,10 @@
 import {NavBar} from "../components/NavBar.jsx";
 import { useForm } from "react-hook-form";
-import {CheckoutCard} from "../components/ui/CheckoutCard.jsx";
 import {useEffect, useState} from "react";
-import {getCartData,getTotal} from "../services/CartService.js";
+import {deleteItem, getCartData, getTotal} from "../services/CartService.js";
 import AxiosClient from "../services/api/AxiosClient.js";
 import {useNavigate} from "react-router-dom";
+import ProductExampleImg from "/placeholders/product_example.jpg";
 
 export default function CheckoutPage(){
     const {register,handleSubmit} = useForm();
@@ -14,7 +14,6 @@ export default function CheckoutPage(){
 
     useEffect(()=>{
         let data=getCartData();
-        //console.log(data);
         let totalData=getTotal();
         setTotal(totalData);
         setCart(data);
@@ -25,6 +24,7 @@ export default function CheckoutPage(){
         const request = await AxiosClient.post("/order", orderData);
         if(request.status === 200){
             setCart([]);
+            localStorage.removeItem("CART_DATA");
             //console.log(request.data.data.id);
             navigate(`/orderdone/${request.data.data.id?request.data.data.id:"x"}`);
         }
@@ -32,6 +32,17 @@ export default function CheckoutPage(){
     }
     function formatNumber(num) {
         return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+    }
+    function removeItem(id){
+        deleteItem(id);
+        let newData=carts.filter(item => item.product_id !== Number(id));
+        let total=0;
+        newData.forEach(item=>{
+            total+=item.product_price*item.quantity;
+        });
+        setTotal(total);
+        setCart(carts.filter(item => item.product_id !== Number(id)));
+
     }
     return (
         <>
@@ -71,8 +82,25 @@ export default function CheckoutPage(){
                 <div className="bg-white flex-1 flex justify-center pt-10">
                     <div className="bg-white w-[80%]">
                         {
-                            carts.map((item)=>(
-                                <CheckoutCard key={item.product_id} name={item.product_name} quantity={item.quantity} price={item.product_price} id={item.product_id}/>
+                            carts.map((item)=> (
+                                /*<CheckoutCard key={item.product_id} name={item.product_name} quantity={item.quantity} price={item.product_price} id={item.product_id} imageUrl={item.image}/>*/
+                                <div className="flex" key={item.product_id}>
+                                    <div className="w-[160px] h-[270px] rounded-lg overflow-hidden">
+                                        <img src={item.image?item.image:ProductExampleImg}
+                                             className="w-full h-auto block"/>
+                                    </div>
+                                    <div className="flex flex-col flex-1 ml-2">
+                                        <div>
+                                            <p className="text-2xl">{item.product_name?item.product_name: "Tên sản phẩm"}</p>
+                                            <p className="text-xl">Giá: {formatNumber(item.product_price)} đ</p>
+                                            <p className="text-xl">Số lượng: {item.quantity}</p>
+                                            <button
+                                                onClick={()=>removeItem(item.product_id)}
+                                                className="text-white bg-red-700 hover:bg-red-800 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2">Xoá
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
                             ))
                         }
                     </div>

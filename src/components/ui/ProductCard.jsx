@@ -5,10 +5,11 @@ export function ProductCard({img="",name="ProductName",price="999.999.999",id}) 
     function formatNumber(num) {
         return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
     }
+    const baseURL=import.meta.env.VITE_API_BASE;
     return (
             <div className="m-2 h-fit w-fit">
                 <div className="w-[260px] h-[370px] rounded-lg overflow-hidden">
-                    <img src={img?img:ProductExampleImg} className="w-full h-auto block"/>
+                    <img src={img?baseURL+img:ProductExampleImg} className="w-full h-[380px] block"/>
                 </div>
                 <Link to={"/product/"+id} className="text-xl my-1 ml-1">
                     {name}

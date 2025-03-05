@@ -9,7 +9,7 @@ export function getCartData(){
 function saveCartData(data){
     localStorage.setItem("CART_DATA",JSON.stringify(data));
 }
-export function saveItem(product,quantity){
+export function saveItem(product,quantity,image){
     //console.log(product);
     if(quantity>0){
         let cart=getCartData();
@@ -18,7 +18,7 @@ export function saveItem(product,quantity){
         if(checkItemExist>-1){
             cart[checkItemExist].quantity+=quantity||1;
         }else {
-            cart.push({product_id:product.id,product_name:product.product_name,product_price:product.price,quantity:quantity});
+            cart.push({product_id:product.id,product_name:product.product_name,product_price:product.price,quantity:quantity,image:image});
         }
         saveCartData(cart);
     }
