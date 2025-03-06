@@ -34,7 +34,8 @@ export function CreateProductForm() {
 
         if(response.status === 200){
             formData.append('product_id',response.data.data.id);
-            axios.post('http://127.0.0.1:8000/api/upload',formData,{
+            const BASE_URL=import.meta.env.VITE_API_BASE_URL;
+            axios.post(`${BASE_URL}/upload`,formData,{
                 headers: {
                     'content-type':'multipart/form-data',
                     'Authorization':`Bearer ${token}`
