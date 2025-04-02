@@ -29,7 +29,7 @@ export function ProductDisplay() {
                     <button onClick={()=>changeProductDisplay(3,'4')}>Phụ kiện mới</button>
                 </li>
             </ul>
-            <div className="grid grid-cols-4">
+            <div className="grid grid-cols-4 mb-9">
                 {productList.map((item)=>(
                     <ProductCard key={item.id} name={item.product_name} price={item.price} img={item.image_url} id={item.id}/>
                 ))}

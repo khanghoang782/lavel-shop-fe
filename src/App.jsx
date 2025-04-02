@@ -12,7 +12,8 @@ import {CatalogPage} from "./pages/CatalogPage.jsx";
 import CheckoutPage from "./pages/CheckoutPage.jsx";
 import AddProductPage from "./pages/admin/AddProductPage.jsx";
 import OrderInfo from "./pages/OrderInfo.jsx";
-import PrivateRoute from "./utils/PrivateRoute.jsx";
+import {GoogleAuth} from "./pages/GoogleAuth.jsx";
+import {OrderActionPage} from "./pages/admin/OrderActionPage.jsx";
 
 
 
@@ -24,11 +25,10 @@ function App() {
         <Route path="/login" element={<LoginPage/>}/>
         <Route path="/register" element={<RegisterForm/>}/>
         <Route path="/product/:id" element={<ProductPage/>}/>
+        <Route path="/gauth" element={<GoogleAuth/>}/>
         <Route path="/catalog/:catalogname" element={<CatalogPage/>}/>
 
-
-            <Route path="/checkout" element={<CheckoutPage/>}/>
-
+        <Route path="/checkout" element={<CheckoutPage/>}/>
 
         <Route path={"/orderdone/:orderid"} element={<OrderInfo/>}/>
 
@@ -38,6 +38,8 @@ function App() {
             <Route path="accounts" element={<AccountManager/>}/>
             <Route path="orders" element={<OrderManager/>}/>
             <Route path="addproduct" element={<AddProductPage/>}/>
+            <Route path="order/:id" element={<OrderActionPage/>}/>
+
         </Route>
 
         <Route path="*" element={<ErrorPage/>}/>

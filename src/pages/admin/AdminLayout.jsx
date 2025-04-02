@@ -1,6 +1,7 @@
 import {Outlet, Navigate, useLocation} from "react-router-dom";
-import {useAuth} from "../../utils/AuthContext.jsx";
+import {AuthProvider, useAuth} from "../../utils/AuthContext.jsx";
 import {SideBar} from "../../components/admin/SideBar.jsx";
+import {useEffect} from "react";
 
 
 const PrivateRoute = () => {

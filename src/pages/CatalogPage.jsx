@@ -11,9 +11,17 @@ export function CatalogPage() {
     const [productList, setProductList] = useState([]);
     const [showSort, setShowSort] = useState(false);
     const [page, setPage] = useState({current:0,last:0});
+    const [selectedAttr, setSelectedAttr] = useState([]);
+    const [filteredProductList, setFilteredProductList] = useState([]);
+    const [sortOption,setSortOption] = useState("")
+
     useEffect(() => {
         initProductDisplay(catalogId);
-    },[catalogId])
+
+    },[catalogId]);
+    useEffect(() => {
+        filterAndSortProducts();
+    },[selectedAttr,sortOption,productList]);
     const initProductDisplay=async (id)=>{
         const result=await getProductByCatalogId(id);
         const productList=result?.data?.[0]?.data ?? []
@@ -21,6 +29,8 @@ export function CatalogPage() {
         setPage({current: 1,last:result.data?.[0].last_page});
 
         setProductList(productList);
+        setFilteredProductList(productList);
+
     }
     const getMoreProducts=async () => {
 
@@ -29,11 +39,39 @@ export function CatalogPage() {
         setProductList([...productList,...list]);
         setPage((prevPage)=> ({...prevPage,current:page.current+1}));
     }
+    /*function setSortedList(option){
+        if(option==="ascending"){
+            const sortedList=[...productList];
+            sortedList.sort((a,b)=>a.price-b.price);
+            console.log(sortedList);
+            setProductList(sortedList);
+        }
+        if(option==="descending"){
+            const sortedList=[...productList];
+            sortedList.sort((a,b)=>b.price-a.price);
+            console.log(sortedList);
+            setProductList(sortedList);
+        }
+    }*/
+    const filterAndSortProducts=()=>{
+        let tempList=[...productList]
+        if(selectedAttr.length>0){
+            tempList=tempList.filter((product)=>product.attribute.some((attr)=>selectedAttr.includes(attr.attribute_name)));
+        }
+        if(sortOption==="ascending"){
+            tempList.sort((a, b) => a.price - b.price);
+        } else if (sortOption === "descending") {
+            tempList.sort((a, b) => b.price - a.price);
+        }
+        setFilteredProductList(tempList);
+    }
+
+
     return (
         <>
             <NavBar/>
             <main className="w-full flex justify-center mt-10">
-                <CatalogSideBar/>
+                <CatalogSideBar size={selectedAttr} setSelectedSize={setSelectedAttr}/>
                 <section className="bg-white w-[1144px]">
                     <div className="w-full flex justify-end pr-10 my-5 text-xl gap-2 items-center">
                         <p>Xắp xếp theo</p>
@@ -45,17 +83,16 @@ export function CatalogPage() {
                             </button>
                             <div
                                 className={showSort ? 'bg-white p-4 mt-1 border border-gray-200 rounded-2xl absolute' : 'bg-white p-4 mt-1 border border-gray-200 rounded-2xl absolute hidden'}>
-                                <ul className="text-xl">
-                                    <li>Giá tăng dần</li>
-                                    <li>Giá giảm dần</li>
-                                    <li>Mới nhất</li>
-                                </ul>
+                                <div className="text-xl">
+                                    <button onClick={()=>setSortOption("ascending")}>Giá tăng dần</button>
+                                    <button onClick={()=>setSortOption("descending")}>Giá giảm dần</button>
+                                </div>
                             </div>
                         </div>
                     </div>
-                    <div className="w-[1144px] bg-white px-5">
-                        <div className="grid grid-cols-4">
-                            {productList.map((item) => (
+                    <div className="w-[1144px] md:w-fit bg-white px-5">
+                        <div className="grid lg:grid-cols-4 md:grid-cols-2">
+                            {filteredProductList.map((item) => (
                                 <ProductCard key={item.id} name={item.product_name} price={item.price} id={item.id} img={item.image_url}/>
                             ))}
                         </div>

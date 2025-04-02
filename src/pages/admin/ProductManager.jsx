@@ -1,5 +1,4 @@
 import {ProductTable} from "../../components/admin/ProductTables.jsx";
-import {CreateProductForm} from "../../components/admin/CreateProductForm.jsx";
 import {useState} from "react";
 
 

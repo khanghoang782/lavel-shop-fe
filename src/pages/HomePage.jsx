@@ -1,6 +1,7 @@
 import {NavBar} from "../components/NavBar.jsx";
 import Banner from "/banners/banner1.png"
 import {ProductDisplay} from "../components/ProductDisplay.jsx";
+import {Footer} from "../components/Footer.jsx";
 
 
 export function HomePage() {
@@ -15,6 +16,7 @@ export function HomePage() {
                 </div>
                 <ProductDisplay/>
             </main>
+            <Footer/>
         </>
     )
 }

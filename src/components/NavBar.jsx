@@ -12,7 +12,7 @@ export function NavBar(){
         {title: "Phụ Kiện", link: "/catalog/4",id:4}
     ];
     return (
-        <nav className="flex bg-white justify-between items-center px-20 h-fit">
+        <nav className="flex bg-white justify-between items-center px-20 h-fit w-screen">
             <div><h2 className="font-bold text-2xl">Lavel shop</h2></div>
             <div className="text-2xl w-[600px] h-fit flex justify-center items-center">
                 {menuList.map((item) => (

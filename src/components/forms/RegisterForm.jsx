@@ -12,14 +12,11 @@ export function RegisterForm() {
     const {register,handleSubmit} = useForm();
 
     const onSubmit = async (data) => {
-        try{
-            const response = await AxiosClient.post("/register",data);
-
-            //console.log(response);
-            navigate("/login",{replace:true});
-        }catch(error){
-            console.log(error);
-        }
+           AxiosClient.post("/register",data).then(
+               navigate("/login",{replace:true})
+           ).catch((error)=>{
+               console.log(error);
+           });
     }
 
     return (
