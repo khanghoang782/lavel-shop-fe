@@ -5,6 +5,8 @@ import ProductExampleImg from "/placeholders/product_example.jpg";
 import {getOneProductById} from "../services/ProductService.js";
 import {saveItem} from "../services/CartService.js";
 import AxiosClient from "../services/api/AxiosClient.js";
+import {FeedBackForm} from "../components/ui/FeedBackForm.jsx";
+import {ProductFeedbackDisplay} from "../components/ui/ProductFeedbackDisplay.jsx";
 
 
 export function ProductPage() {
@@ -14,6 +16,8 @@ export function ProductPage() {
     const [image, setImage] = useState("");
     const [attribute, setAttribute] = useState("");
     const [attributeList, setAttributeList] = useState([]);
+
+    const [productFeedback, setProductFeedback] = useState([]);
     useEffect(() => {
         getProduct();
     },[])
@@ -22,17 +26,26 @@ export function ProductPage() {
         const result = await getOneProductById(productId);
         setProduct(result);
         setAttributeList(result.attribute);
-        console.log(result);
+        initFeedback();
+        //console.log(result);
         AxiosClient.get(`/product/${productId}/image`).then((response) => {
             const BASE_URL=import.meta.env.VITE_API_BASE;
             let url=BASE_URL+`/storage/images/${response.data.image_name}`;
             setImage(url);
+
         }).catch(() => {
             //console.log(error);
             setImage("");
         })
     }
-
+    const initFeedback=()=>{
+        AxiosClient.get(`/product/${productId}/feedback`).then((response) => {
+            setProductFeedback(response.data);
+            //console.log(response.data);
+        }).catch((error) => {
+            console.log(error);
+        })
+    }
 
     function saveProduct(product,quantity,image,attribute){
         saveItem(product,quantity,image,attribute);
@@ -44,6 +57,9 @@ export function ProductPage() {
                 className={selectedButton!=value?"text-3xl font-semibold border-[3px] px-1.5 mr-2":"text-3xl font-semibold border-[3px] px-1.5 border-blue-400 mr-2"}
                 onClick={()=>setSelected(value)}>{value}</button>
         )
+    }
+    function formatPrice(price){
+        return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
     }
     return (
         <>
@@ -65,7 +81,7 @@ export function ProductPage() {
                                 }
                             </div>
                         </div>
-                        <h2 className="mt-20 text-4xl">{product.price} đ</h2>
+                        <h2 className="mt-20 text-4xl">{formatPrice(product.price?product.price:0)} đ</h2>
                         <div className="mb-5 flex gap-28">
                             <div className="relative flex items-center max-w-[8rem]">
                                 <button
@@ -93,6 +109,16 @@ export function ProductPage() {
                     <p className="rounded-lg bg-white p-6 text-xl w-[1060px]">
                         {product.description}
                     </p>
+                </div>
+                <div className="mt-2.5 rounded-lg bg-white p-6 text-xl w-[1060px] flex flex-col">
+                    <FeedBackForm productId={productId} onSubmitSucced={initFeedback}/>
+
+                        {
+                            productFeedback.map((item, index) => (
+                                <ProductFeedbackDisplay key={index} data={item}/>
+                            ))
+                        }
+
                 </div>
             </main>
         </>

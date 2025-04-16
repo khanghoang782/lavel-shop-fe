@@ -21,13 +21,21 @@ export default function CheckoutPage(){
     const onSubmit=async (data) => {
         let orderData = {customer: data, cart: carts};
         //console.log(orderData);
-        const request = await AxiosClient.post("/order", orderData);
+        /*const request = await AxiosClient.post("/order", orderData);
         if(request.status === 200){
             setCart([]);
             localStorage.removeItem("CART_DATA");
             //console.log(request.data.data.id);
             navigate(`/orderdone/${request.data.data.id?request.data.data.id:"x"}`);
-        }
+        }*/
+        AxiosClient.post(`/order`, orderData).then((res)=>{
+            setCart([]);
+            localStorage.removeItem("CART_DATA");
+            navigate(`/orderdone/${res.data.id?res.data.id:"x"}`);
+            console.log(res.data);
+        }).catch((err)=>{
+            console.log(err);
+        })
         //console.log(JSON.stringify(request));
     }
     function formatNumber(num) {
