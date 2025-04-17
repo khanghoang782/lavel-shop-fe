@@ -1,0 +1,10 @@
+services:
+  react-server:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: lavel-shop-fe
+    expose:
+      - "80"
+    networks:
+      - caddy-net
